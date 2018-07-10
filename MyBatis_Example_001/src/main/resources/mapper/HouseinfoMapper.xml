@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mbe.mapper.HouseinfoMapper">
+  <resultMap id="BaseResultMap" type="com.mbe.model.Houseinfo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="HOUSEID" jdbcType="VARCHAR" property="houseid" />
+    <result column="TITLE" jdbcType="VARCHAR" property="title" />
+    <result column="BUILDINGNO" jdbcType="VARCHAR" property="buildingno" />
+    <result column="HOUSETYPE" jdbcType="VARCHAR" property="housetype" />
+    <result column="AREAID" jdbcType="VARCHAR" property="areaid" />
+    <result column="INFOSTATUS" jdbcType="VARCHAR" property="infostatus" />
+    <result column="COMPLETIONTIME" jdbcType="TIMESTAMP" property="completiontime" />
+    <result column="PROPERTYYEARS" jdbcType="VARCHAR" property="propertyyears" />
+    <result column="ROOMRATE" jdbcType="DOUBLE" property="roomrate" />
+    <result column="HOUSESTATUS" jdbcType="VARCHAR" property="housestatus" />
+    <result column="RENTAL" jdbcType="DOUBLE" property="rental" />
+    <result column="RENTALUNIT" jdbcType="VARCHAR" property="rentalunit" />
+    <result column="PROPERTYFEE" jdbcType="DOUBLE" property="propertyfee" />
+    <result column="PROPERTYFEEUNIT" jdbcType="VARCHAR" property="propertyfeeunit" />
+    <result column="PRICE" jdbcType="DOUBLE" property="price" />
+    <result column="PRICEUNIT" jdbcType="VARCHAR" property="priceunit" />
+    <result column="BUILDUPAREA" jdbcType="DOUBLE" property="builduparea" />
+    <result column="RENTEDAREA" jdbcType="DOUBLE" property="rentedarea" />
+    <result column="DIVIDEDAREA" jdbcType="VARCHAR" property="dividedarea" />
+    <result column="FLOORCOUNT" jdbcType="INTEGER" property="floorcount" />
+    <result column="FLOORHEIGHT" jdbcType="DOUBLE" property="floorheight" />
+    <result column="PARKINGCOUNT" jdbcType="INTEGER" property="parkingcount" />
+    <result column="ELEVATORTONNAGE" jdbcType="DOUBLE" property="elevatortonnage" />
+    <result column="DEVCOMPANY" jdbcType="VARCHAR" property="devcompany" />
+    <result column="OPECOMPANY" jdbcType="VARCHAR" property="opecompany" />
+    <result column="CONTACT" jdbcType="VARCHAR" property="contact" />
+    <result column="TELEPHONE" jdbcType="VARCHAR" property="telephone" />
+    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    <result column="PROVINCE" jdbcType="VARCHAR" property="province" />
+    <result column="CITY" jdbcType="VARCHAR" property="city" />
+    <result column="DOWNTOWN" jdbcType="VARCHAR" property="downtown" />
+    <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+    <result column="SUPPORTING" jdbcType="VARCHAR" property="supporting" />
+    <result column="CREATEBY" jdbcType="VARCHAR" property="createby" />
+    <result column="CREATEON" jdbcType="TIMESTAMP" property="createon" />
+    <result column="MODIFYBY" jdbcType="VARCHAR" property="modifyby" />
+    <result column="MODIFYON" jdbcType="TIMESTAMP" property="modifyon" />
+    <result column="OWNER" jdbcType="VARCHAR" property="owner" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="INTRODUCTION" jdbcType="VARCHAR" property="introduction" />
+    <result column="ATTACHEDINFO" jdbcType="LONGVARCHAR" property="attachedinfo" />
+    <result column="ELECTRICALSYSTEM" jdbcType="LONGVARCHAR" property="electricalsystem" />
+    <result column="SECURITYSYSTEM" jdbcType="LONGVARCHAR" property="securitysystem" />
+    <result column="AIRCONDITIONSYSTEM" jdbcType="LONGVARCHAR" property="airconditionsystem" />
+    <result column="COMMUNICATIONSYSTEM" jdbcType="LONGVARCHAR" property="communicationsystem" />
+    <result column="FIREEXTINGUISHERSYSTEM" jdbcType="LONGVARCHAR" property="fireextinguishersystem" />
+  </resultMap>
+	<!-- 后台查询列表值 -->
+	<sql id="Base_List">
+		HOUSEID,TITLE,BUILDINGNO,HOUSETYPE,AREAID,INFOSTATUS,COMPLETIONTIME,PROPERTYYEARS,ROOMRATE,HOUSESTATUS,RENTAL,
+    RENTALUNIT,PROPERTYFEE,PROPERTYFEEUNIT,PRICE,PRICEUNIT,BUILDUPAREA,RENTEDAREA,DIVIDEDAREA,FLOORCOUNT,FLOORHEIGHT,
+    PARKINGCOUNT,ELEVATORTONNAGE,INTRODUCTION,ATTACHEDINFO,DEVCOMPANY,OPECOMPANY,CONTACT,TELEPHONE,EMAIL,PROVINCE,CITY,DOWNTOWN,
+    ADDRESS,SUPPORTING,ELECTRICALSYSTEM,SECURITYSYSTEM,AIRCONDITIONSYSTEM,COMMUNICATIONSYSTEM,FIREEXTINGUISHERSYSTEM
+    </sql>
+
+	<!-- 查询所有、模糊搜索 -->
+    <select id="countByAreaAndTitle" resultType="int">
+        select count(HOUSEID)
+        FROM
+        houseinfo
+        WHERE STATUS != '1'
+        <if test="areaId !=null and areaId!=''">
+            AND AREAID = #{areaId}
+        </if>
+        <if test="title !=null and title!=''">
+            AND TITLE LIKE '%${title}%'
+        </if>
+    </select>
+	<select id="selectByAreaAndTitle" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_List"/>
+		FROM
+		houseinfo
+		WHERE STATUS != '1'
+        <if test="areaId != null and areaId != ''">
+			AND AREAID = #{areaId}
+		</if>
+		<if test="title != null and title != ''">
+			AND TITLE LIKE '%${title}%'
+		</if>
+        ORDER BY
+        <if test="sortColumn != null and sortColumn!= ''">
+            <if test= "sortColumn== 'HOUSESTATUS'">
+                HOUSESTATUS,
+                <if test="sortOrder != null and sortOrder != ''">
+                    RENTAL ${sortOrder},PRICE ${sortOrder},
+                </if>
+            </if>
+            <if test= "sortColumn!= 'HOUSESTATUS'">
+                 ${sortColumn}
+                <if test="sortOrder != null and sortOrder != ''">
+                    ${sortOrder}
+                </if>
+                ,
+            </if>
+        </if>
+		createon DESC
+		LIMIT #{start},#{pageSize}
+	</select>
+
+    <!-- 修改房源发布状态-->
+    <update id="updateInfoStatus">
+        UPDATE  houseinfo
+        SET INFOSTATUS = #{infoStatus}
+        WHERE HOUSEID = #{houseId}
+    </update>
+
+    <!-- 修改房源信息状态：逻辑删除 -->
+    <update id="updateStatus">
+        UPDATE  houseinfo
+        SET STATUS = '1'
+        WHERE HOUSEID = #{houseId}
+    </update>
+
+    <select id="countByCondition" resultType="int">
+        select count(HOUSEID)
+        FROM
+        houseinfo
+        WHERE STATUS != '1'
+        <if test="houseStatus !=null and houseStatus!=''">
+            AND HOUSESTATUS = #{houseStatus}
+        </if>
+        <if test="houseType !=null and houseType!=''">
+            AND HOUSETYPE = #{houseType}
+        </if>
+        <if test="city !=null and city!=''">
+            AND CITY = #{city}
+        </if>
+        <if test="downTown !=null and downTown!=''">
+            AND DOWNTOWN = #{downTown}
+        </if>
+        <if test="areaLowLimit !=null">
+            AND BUILDUPAREA &gt;= #{areaLowLimit}
+        </if>
+        <if test="areaTopLimit !=null">
+            AND BUILDUPAREA &lt;= #{areaTopLimit}
+        </if>
+        <if test="rentalLowLimit !=null">
+            AND RENTAL &gt;= #{rentalLowLimit}
+        </if>
+        <if test="rentalTopLimit !=null">
+            AND RENTAL &lt;= #{rentalTopLimit}
+        </if>
+        <if test="priceLowLimit !=null">
+            AND PRICE &gt;= #{priceLowLimit}
+        </if>
+        <if test="priceTopLimit !=null">
+            AND PRICE &lt;= #{priceTopLimit}
+        </if>
+    </select>
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_List"/>
+        FROM
+        houseinfo
+        WHERE STATUS != '1'
+        <if test="houseStatus !=null and houseStatus!=''">
+            AND HOUSESTATUS = #{houseStatus}
+        </if>
+        <if test="houseType !=null and houseType!=''">
+            AND HOUSETYPE = #{houseType}
+        </if>
+        <if test="city !=null and city!=''">
+            AND CITY = #{city}
+        </if>
+        <if test="downTown !=null and downTown!=''">
+            AND DOWNTOWN = #{downTown}
+        </if>
+        <if test="areaLowLimit !=null">
+            AND BUILDUPAREA &gt;= #{areaLowLimit}
+        </if>
+        <if test="areaTopLimit !=null">
+            AND BUILDUPAREA &lt;= #{areaTopLimit}
+        </if>
+        <if test="rentalLowLimit !=null">
+            AND RENTAL &gt;= #{rentalLowLimit}
+        </if>
+        <if test="rentalTopLimit !=null">
+            AND RENTAL &lt;= #{rentalTopLimit}
+        </if>
+        <if test="priceLowLimit !=null">
+            AND PRICE &gt;= #{priceLowLimit}
+        </if>
+        <if test="priceTopLimit !=null">
+            AND PRICE &lt;= #{priceTopLimit}
+        </if>
+        ORDER BY
+        AREAID,CITY,DOWNTOWN
+        LIMIT #{start},#{pageSize}
+    </select>
+
+    <!-- 按照园区ID，统计房源数量 -->
+    <select id="countHouses" resultType="Integer">
+        SELECT COUNT(1)
+        FROM
+        houseinfo
+        where `status` = '0'
+        AND areaid = #{areaId}
+    </select>
+
+</mapper>

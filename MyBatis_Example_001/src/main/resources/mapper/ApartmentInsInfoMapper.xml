@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mbe.mapper.ApartmentInsInfoMapper">
+
+  <resultMap id="BaseResultMap" type="com.mbe.model.ApartmentInsInfo">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="INSURANCENO" jdbcType="VARCHAR" property="insuranceno" />
+    <result column="INSUREDNAME" jdbcType="VARCHAR" property="insuredname" />
+    <result column="INSSTARTDATE" jdbcType="TIMESTAMP" property="insstartdate" />
+    <result column="INSENDDATE" jdbcType="TIMESTAMP" property="insenddate" />
+    <result column="INSPROPERTYADDR" jdbcType="VARCHAR" property="inspropertyaddr" />
+    <result column="INSCOMPANYNAME" jdbcType="VARCHAR" property="inscompanyname" />
+    <result column="INSAMOUNTSUM" jdbcType="DOUBLE" property="insamountsum" />
+    <result column="PREMIUMSUM" jdbcType="DOUBLE" property="premiumsum" />
+    <result column="PAYDEADLINE" jdbcType="TIMESTAMP" property="paydeadline" />
+    <result column="POLICYSTATE" jdbcType="VARCHAR" property="policystate" />
+    <result column="ATTACHEDINFO" jdbcType="VARCHAR" property="attachedinfo" />
+    <result column="CREATEBY" jdbcType="VARCHAR" property="createby" />
+    <result column="CREATEON" jdbcType="DATE" property="createon" />
+    <result column="MODIFYBY" jdbcType="VARCHAR" property="modifyby" />
+    <result column="MODIFYON" jdbcType="DATE" property="modifyon" />
+    <result column="OWNER" jdbcType="VARCHAR" property="owner" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, INSURANCENO, INSUREDNAME, INSSTARTDATE, INSENDDATE, INSPROPERTYADDR, INSCOMPANYNAME, 
+    INSAMOUNTSUM, PREMIUMSUM, PAYDEADLINE, ATTACHEDINFO,   CREATEBY, CREATEON, MODIFYBY, MODIFYON, OWNER, STATUS,
+    (case when(date(now()) &gt;= date(INSSTARTDATE) and date(now()) &lt;= date(INSENDDATE)) then '有效' else '过期' end) as POLICYSTATE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from apartmentinsinfo
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from apartmentinsinfo
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.mbe.model.ApartmentInsInfo">
+    insert into apartmentinsinfo (ID, INSURANCENO, INSUREDNAME, 
+      INSSTARTDATE, INSENDDATE, INSPROPERTYADDR, 
+      INSCOMPANYNAME, INSAMOUNTSUM, PREMIUMSUM, 
+      PAYDEADLINE,    ATTACHEDINFO,
+       CREATEBY, CREATEON, MODIFYBY,
+      MODIFYON, OWNER, STATUS
+      )
+    values (#{id,jdbcType=VARCHAR}, #{insuranceno,jdbcType=VARCHAR}, #{insuredname,jdbcType=VARCHAR}, 
+      #{insstartdate,jdbcType=TIMESTAMP}, #{insenddate,jdbcType=TIMESTAMP}, #{inspropertyaddr,jdbcType=VARCHAR}, 
+      #{inscompanyname,jdbcType=VARCHAR}, #{insamountsum,jdbcType=DOUBLE}, #{premiumsum,jdbcType=DOUBLE}, 
+      #{paydeadline,jdbcType=TIMESTAMP},   #{attachedinfo,jdbcType=VARCHAR},
+      #{createby,jdbcType=VARCHAR}, #{createon,jdbcType=DATE}, #{modifyby,jdbcType=VARCHAR}, 
+      #{modifyon,jdbcType=DATE}, #{owner,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mbe.model.ApartmentInsInfo">
+    insert into apartmentinsinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="insuranceno != null">
+        INSURANCENO,
+      </if>
+      <if test="insuredname != null">
+        INSUREDNAME,
+      </if>
+      <if test="insstartdate != null">
+        INSSTARTDATE,
+      </if>
+      <if test="insenddate != null">
+        INSENDDATE,
+      </if>
+      <if test="inspropertyaddr != null">
+        INSPROPERTYADDR,
+      </if>
+      <if test="inscompanyname != null">
+        INSCOMPANYNAME,
+      </if>
+      <if test="insamountsum != null">
+        INSAMOUNTSUM,
+      </if>
+      <if test="premiumsum != null">
+        PREMIUMSUM,
+      </if>
+      <if test="paydeadline != null">
+        PAYDEADLINE,
+      </if>
+
+      <if test="attachedinfo != null">
+        ATTACHEDINFO,
+      </if>
+
+      <if test="createby != null">
+        CREATEBY,
+      </if>
+      <if test="createon != null">
+        CREATEON,
+      </if>
+      <if test="modifyby != null">
+        MODIFYBY,
+      </if>
+      <if test="modifyon != null">
+        MODIFYON,
+      </if>
+      <if test="owner != null">
+        OWNER,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="insuranceno != null">
+        #{insuranceno,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredname != null">
+        #{insuredname,jdbcType=VARCHAR},
+      </if>
+      <if test="insstartdate != null">
+        #{insstartdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="insenddate != null">
+        #{insenddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="inspropertyaddr != null">
+        #{inspropertyaddr,jdbcType=VARCHAR},
+      </if>
+      <if test="inscompanyname != null">
+        #{inscompanyname,jdbcType=VARCHAR},
+      </if>
+      <if test="insamountsum != null">
+        #{insamountsum,jdbcType=DOUBLE},
+      </if>
+      <if test="premiumsum != null">
+        #{premiumsum,jdbcType=DOUBLE},
+      </if>
+      <if test="paydeadline != null">
+        #{paydeadline,jdbcType=TIMESTAMP},
+      </if>
+
+      <if test="attachedinfo != null">
+        #{attachedinfo,jdbcType=VARCHAR},
+      </if>
+
+      <if test="createby != null">
+        #{createby,jdbcType=VARCHAR},
+      </if>
+      <if test="createon != null">
+        #{createon,jdbcType=DATE},
+      </if>
+      <if test="modifyby != null">
+        #{modifyby,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyon != null">
+        #{modifyon,jdbcType=DATE},
+      </if>
+      <if test="owner != null">
+        #{owner,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mbe.model.ApartmentInsInfo">
+    update apartmentinsinfo
+    <set>
+      <if test="insuranceno != null">
+        INSURANCENO = #{insuranceno,jdbcType=VARCHAR},
+      </if>
+      <if test="insuredname != null">
+        INSUREDNAME = #{insuredname,jdbcType=VARCHAR},
+      </if>
+      <if test="insstartdate != null">
+        INSSTARTDATE = #{insstartdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="insenddate != null">
+        INSENDDATE = #{insenddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="inspropertyaddr != null">
+        INSPROPERTYADDR = #{inspropertyaddr,jdbcType=VARCHAR},
+      </if>
+      <if test="inscompanyname != null">
+        INSCOMPANYNAME = #{inscompanyname,jdbcType=VARCHAR},
+      </if>
+      <if test="insamountsum != null">
+        INSAMOUNTSUM = #{insamountsum,jdbcType=DOUBLE},
+      </if>
+      <if test="premiumsum != null">
+        PREMIUMSUM = #{premiumsum,jdbcType=DOUBLE},
+      </if>
+      <if test="paydeadline != null">
+        PAYDEADLINE = #{paydeadline,jdbcType=TIMESTAMP},
+      </if>
+
+      <if test="attachedinfo != null">
+        ATTACHEDINFO = #{attachedinfo,jdbcType=VARCHAR},
+      </if>
+
+      <if test="createby != null">
+        CREATEBY = #{createby,jdbcType=VARCHAR},
+      </if>
+      <if test="createon != null">
+        CREATEON = #{createon,jdbcType=DATE},
+      </if>
+      <if test="modifyby != null">
+        MODIFYBY = #{modifyby,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyon != null">
+        MODIFYON = #{modifyon,jdbcType=DATE},
+      </if>
+      <if test="owner != null">
+        OWNER = #{owner,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mbe.model.ApartmentInsInfo">
+    update apartmentinsinfo
+    set INSURANCENO = #{insuranceno,jdbcType=VARCHAR},
+      INSUREDNAME = #{insuredname,jdbcType=VARCHAR},
+      INSSTARTDATE = #{insstartdate,jdbcType=TIMESTAMP},
+      INSENDDATE = #{insenddate,jdbcType=TIMESTAMP},
+      INSPROPERTYADDR = #{inspropertyaddr,jdbcType=VARCHAR},
+      INSCOMPANYNAME = #{inscompanyname,jdbcType=VARCHAR},
+      INSAMOUNTSUM = #{insamountsum,jdbcType=DOUBLE},
+      PREMIUMSUM = #{premiumsum,jdbcType=DOUBLE},
+      PAYDEADLINE = #{paydeadline,jdbcType=TIMESTAMP},
+      ATTACHEDINFO = #{attachedinfo,jdbcType=VARCHAR},
+      CREATEBY = #{createby,jdbcType=VARCHAR},
+      CREATEON = #{createon,jdbcType=DATE},
+      MODIFYBY = #{modifyby,jdbcType=VARCHAR},
+      MODIFYON = #{modifyon,jdbcType=DATE},
+      OWNER = #{owner,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+ <!-- <include refid="Base_Column_List" /> -->
+   <!-- 查询所有、模糊搜索 -->
+  <select id="countByInsNoOrAddress" resultType="int">
+    select count(ID)
+    FROM
+    apartmentinsinfo
+    WHERE 1=1 AND Status='0'
+    <if test="insuranceno !=null and insuranceno!=''">
+      AND (INSURANCENO  like '%${insuranceno}%'
+      OR INSPROPERTYADDR LIKE '%${insuranceno}%')
+    </if>
+    <choose>
+      <when test="policystate=='1'">
+        AND (date(now()) &gt;= date(INSSTARTDATE) and date(now()) &lt;= date(INSENDDATE))
+      </when>
+      <otherwise>
+        AND (date(now()) &lt; date(INSSTARTDATE) or date(now()) &gt; date(INSENDDATE))
+      </otherwise>
+    </choose>
+  </select>
+  <select id="selectByInsNoOrAddress" resultType="com.mbe.vo.ApartmentInsInfoVo">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM
+    apartmentinsinfo
+    WHERE 1=1 AND Status='0'
+    <if test="insuranceno !=null and insuranceno!=''">
+      AND (INSURANCENO  like '%${insuranceno}%'
+      OR INSPROPERTYADDR LIKE '%${insuranceno}%')
+    </if>
+    <choose>
+      <when test="policystate=='1'">
+        AND (date(now()) &gt;= date(INSSTARTDATE) and date(now()) &lt;= date(INSENDDATE))
+      </when>
+      <when test="policystate=='2'">
+        AND (date(now()) &lt; date(INSSTARTDATE) or date(now()) &gt; date(INSENDDATE))
+      </when>
+      <otherwise>
+      </otherwise>
+    </choose>
+    <if test="sortColumn != null and sortColumn!= ''">
+      ORDER BY
+      ${sortColumn}
+      <if test="sortOrder != null and sortOrder != ''">
+        ${sortOrder}
+      </if>
+
+    </if>
+    LIMIT #{start},#{pageSize}
+  </select>
+</mapper>

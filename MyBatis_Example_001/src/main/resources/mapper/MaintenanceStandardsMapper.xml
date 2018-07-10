@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mbe.mapper.MaintenanceStandardsMapper">
+  <resultMap id="BaseResultMap" type="com.mbe.model.MaintenanceStandards">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="EQUTYPEID" jdbcType="VARCHAR" property="equtypeid" />
+    <result column="MAINTENCYCLEID" jdbcType="VARCHAR" property="maintencycleid" />
+    <result column="MAINTENTYPEID" jdbcType="VARCHAR" property="maintentypeid" />
+    <result column="MAINTENEXEID" jdbcType="VARCHAR" property="maintenexeid" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="CREATERID" jdbcType="VARCHAR" property="createrid" />
+    <result column="CREATEDATE" jdbcType="DATE" property="createdate" />
+    <result column="CREATEBY" jdbcType="VARCHAR" property="createby" />
+    <result column="CREATEON" jdbcType="DATE" property="createon" />
+    <result column="MODIFYBY" jdbcType="VARCHAR" property="modifyby" />
+    <result column="MODIFYON" jdbcType="DATE" property="modifyon" />
+    <result column="OWNER" jdbcType="VARCHAR" property="owner" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="MAINTENANCEPERIOD" jdbcType="LONGVARCHAR" property="maintenanceperiod" />
+    <result column="ATTACHEDINFO" jdbcType="LONGVARCHAR" property="attachedinfo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, EQUTYPEID, MAINTENCYCLEID, MAINTENTYPEID, MAINTENEXEID, REMARK, CREATERID, CREATEDATE, 
+    CREATEBY, CREATEON, MODIFYBY, MODIFYON, OWNER, STATUS
+  </sql>
+  <sql id="Blob_Column_List">
+    MAINTENANCEPERIOD, ATTACHEDINFO
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from maintenancestandards
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from maintenancestandards
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.mbe.model.MaintenanceStandards">
+    insert into maintenancestandards (ID, EQUTYPEID, MAINTENCYCLEID, 
+      MAINTENTYPEID, MAINTENEXEID, REMARK, 
+      CREATERID, CREATEDATE, CREATEBY, 
+      CREATEON, MODIFYBY, MODIFYON, 
+      OWNER, STATUS, MAINTENANCEPERIOD, 
+      ATTACHEDINFO)
+    values (#{id,jdbcType=VARCHAR}, #{equtypeid,jdbcType=VARCHAR}, #{maintencycleid,jdbcType=VARCHAR}, 
+      #{maintentypeid,jdbcType=VARCHAR}, #{maintenexeid,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{createrid,jdbcType=VARCHAR}, #{createdate,jdbcType=DATE}, #{createby,jdbcType=VARCHAR}, 
+      #{createon,jdbcType=DATE}, #{modifyby,jdbcType=VARCHAR}, #{modifyon,jdbcType=DATE}, 
+      #{owner,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{maintenanceperiod,jdbcType=LONGVARCHAR}, 
+      #{attachedinfo,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mbe.model.MaintenanceStandards">
+    insert into maintenancestandards
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="equtypeid != null">
+        EQUTYPEID,
+      </if>
+      <if test="maintencycleid != null">
+        MAINTENCYCLEID,
+      </if>
+      <if test="maintentypeid != null">
+        MAINTENTYPEID,
+      </if>
+      <if test="maintenexeid != null">
+        MAINTENEXEID,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+      <if test="createrid != null">
+        CREATERID,
+      </if>
+      <if test="createdate != null">
+        CREATEDATE,
+      </if>
+      <if test="createby != null">
+        CREATEBY,
+      </if>
+      <if test="createon != null">
+        CREATEON,
+      </if>
+      <if test="modifyby != null">
+        MODIFYBY,
+      </if>
+      <if test="modifyon != null">
+        MODIFYON,
+      </if>
+      <if test="owner != null">
+        OWNER,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="maintenanceperiod != null">
+        MAINTENANCEPERIOD,
+      </if>
+      <if test="attachedinfo != null">
+        ATTACHEDINFO,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="equtypeid != null">
+        #{equtypeid,jdbcType=VARCHAR},
+      </if>
+      <if test="maintencycleid != null">
+        #{maintencycleid,jdbcType=VARCHAR},
+      </if>
+      <if test="maintentypeid != null">
+        #{maintentypeid,jdbcType=VARCHAR},
+      </if>
+      <if test="maintenexeid != null">
+        #{maintenexeid,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createrid != null">
+        #{createrid,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        #{createdate,jdbcType=DATE},
+      </if>
+      <if test="createby != null">
+        #{createby,jdbcType=VARCHAR},
+      </if>
+      <if test="createon != null">
+        #{createon,jdbcType=DATE},
+      </if>
+      <if test="modifyby != null">
+        #{modifyby,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyon != null">
+        #{modifyon,jdbcType=DATE},
+      </if>
+      <if test="owner != null">
+        #{owner,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="maintenanceperiod != null">
+        #{maintenanceperiod,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="attachedinfo != null">
+        #{attachedinfo,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mbe.model.MaintenanceStandards">
+    update maintenancestandards
+    <set>
+      <if test="equtypeid != null">
+        EQUTYPEID = #{equtypeid,jdbcType=VARCHAR},
+      </if>
+      <if test="maintencycleid != null">
+        MAINTENCYCLEID = #{maintencycleid,jdbcType=VARCHAR},
+      </if>
+      <if test="maintentypeid != null">
+        MAINTENTYPEID = #{maintentypeid,jdbcType=VARCHAR},
+      </if>
+      <if test="maintenexeid != null">
+        MAINTENEXEID = #{maintenexeid,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createrid != null">
+        CREATERID = #{createrid,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        CREATEDATE = #{createdate,jdbcType=DATE},
+      </if>
+      <if test="createby != null">
+        CREATEBY = #{createby,jdbcType=VARCHAR},
+      </if>
+      <if test="createon != null">
+        CREATEON = #{createon,jdbcType=DATE},
+      </if>
+      <if test="modifyby != null">
+        MODIFYBY = #{modifyby,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyon != null">
+        MODIFYON = #{modifyon,jdbcType=DATE},
+      </if>
+      <if test="owner != null">
+        OWNER = #{owner,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="maintenanceperiod != null">
+        MAINTENANCEPERIOD = #{maintenanceperiod,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="attachedinfo != null">
+        ATTACHEDINFO = #{attachedinfo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mbe.model.MaintenanceStandards">
+    update maintenancestandards
+    set EQUTYPEID = #{equtypeid,jdbcType=VARCHAR},
+      MAINTENCYCLEID = #{maintencycleid,jdbcType=VARCHAR},
+      MAINTENTYPEID = #{maintentypeid,jdbcType=VARCHAR},
+      MAINTENEXEID = #{maintenexeid,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      CREATERID = #{createrid,jdbcType=VARCHAR},
+      CREATEDATE = #{createdate,jdbcType=DATE},
+      CREATEBY = #{createby,jdbcType=VARCHAR},
+      CREATEON = #{createon,jdbcType=DATE},
+      MODIFYBY = #{modifyby,jdbcType=VARCHAR},
+      MODIFYON = #{modifyon,jdbcType=DATE},
+      OWNER = #{owner,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      MAINTENANCEPERIOD = #{maintenanceperiod,jdbcType=LONGVARCHAR},
+      ATTACHEDINFO = #{attachedinfo,jdbcType=LONGVARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+<!--fuzzyQuery-->
+   <select id="countFuzzyQuery" resultType="int" parameterType="java.lang.String">
+    select count(ID)
+    FROM
+     maintenancestandards
+    WHERE 1=1 AND Status='0'
+    <if test="fuzzyQueryStr !=null and fuzzyQueryStr!=''">
+      AND ( EQUTYPEID          like '%${fuzzyQueryStr}%'
+      OR MAINTENCYCLEID   like '%${fuzzyQueryStr}%'
+      OR MAINTENTYPEID    like '%${fuzzyQueryStr}%'
+      OR MAINTENEXEID     like '%${fuzzyQueryStr}%'
+      OR CREATERID        like '%${fuzzyQueryStr}%'
+      OR CREATEDATE       like '%${fuzzyQueryStr}%' )
+    </if>
+
+  </select>
+  <select id="fuzzyQuery" resultType="com.mbe.vo.MaintenanceStandardsVo" parameterType="java.lang.String">
+    SELECT
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    FROM  maintenancestandards
+    WHERE 1=1 AND Status='0'
+    <if test="fuzzyQueryStr !=null and fuzzyQueryStr!=''">
+      AND ( EQUTYPEID          like '%${fuzzyQueryStr}%'
+      OR MAINTENCYCLEID   like '%${fuzzyQueryStr}%'
+      OR MAINTENTYPEID    like '%${fuzzyQueryStr}%'
+      OR MAINTENEXEID     like '%${fuzzyQueryStr}%'
+      OR CREATERID        like '%${fuzzyQueryStr}%'
+      OR CREATEDATE       like '%${fuzzyQueryStr}%' )
+    </if>
+
+    <if test="sortColumn != null and sortColumn!= ''">
+      ORDER BY
+      ${sortColumn}
+      <if test="sortOrder != null and sortOrder != ''">
+        ${sortOrder}
+      </if>
+
+    </if>
+    LIMIT #{start},#{pageSize}
+  </select>
+</mapper>

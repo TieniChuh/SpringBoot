@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mbe.mapper.WarrantinfoMapper" >
+  <resultMap id="BaseResultMap" type="com.mbe.model.Warrantinfo" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="WARRANTID" property="warrantid" jdbcType="VARCHAR" />
+    <result column="WARRANTLOCAL" property="warrantlocal" jdbcType="VARCHAR" />
+    <result column="WARRANTHOLDER" property="warrantholder" jdbcType="VARCHAR" />
+    <result column="WARRANTADDRESS" property="warrantaddress" jdbcType="VARCHAR" />
+    <result column="WARRANTCUSTODIALUNIT" property="warrantcustodialunit" jdbcType="VARCHAR" />
+    <result column="WARRANTTYPE" property="warranttype" jdbcType="VARCHAR" />
+    <result column="WARRANTNATURELAND" property="warrantnatureland" jdbcType="VARCHAR" />
+    <result column="WARRANTBULIDINGTYPE" property="warrantbulidingtype" jdbcType="VARCHAR" />
+    <result column="WARRANTBUILDINGAREA" property="warrantbuildingarea" jdbcType="DOUBLE" />
+    <result column="WARRANTGETACCSEE" property="warrantgetaccsee" jdbcType="VARCHAR" />
+    <result column="WARRANTUSEAREA" property="warrantusearea" jdbcType="DOUBLE" />
+    <result column="WARRANTEXPIRATIONFROMDATE" property="warrantexpirationfromdate" jdbcType="TIMESTAMP" />
+    <result column="WARRANTEXPIRATIONTODATE" property="warrantexpirationtodate" jdbcType="TIMESTAMP" />
+    <result column="WARRANTSAFEKEEPING" property="warrantsafekeeping" jdbcType="BIT" />
+    <result column="WARRANTMORTGAGE" property="warrantmortgage" jdbcType="BIT" />
+    <result column="WARRANTREMARKS" property="warrantremarks" jdbcType="VARCHAR" />
+    <result column="WARRANTDATASTATUS" property="warrantdatastatus" jdbcType="VARCHAR" />
+    <result column="WARRANTSTATUS" property="warrantstatus" jdbcType="VARCHAR" />
+    <result column="OWNER" property="owner" jdbcType="VARCHAR" />
+    <result column="TENANTID" property="tenantid" jdbcType="VARCHAR" />
+    <result column="CREATEBY" property="createby" jdbcType="VARCHAR" />
+    <result column="CREATEON" property="createon" jdbcType="TIMESTAMP" />
+    <result column="MODIFYBY" property="modifyby" jdbcType="VARCHAR" />
+    <result column="MODIFYON" property="modifyon" jdbcType="TIMESTAMP" />
+    <result column="WARRANTBORROWSTATE" property="warrantborrowstate" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="selectWarrantInfo" parameterType="com.mbe.vo.WarrantInfoVo"
+		resultType="com.mbe.vo.WarrantInfoVo">
+		select *
+		    
+		from warrantinfo warrantinfo
+		
+		where 1=1
+		
+		<if test="warrantsafekeeping != null">
+		and	warrantinfo.WARRANTSAFEKEEPING =#{warrantsafekeeping}
+		</if>
+		
+		<if test="warrantmortgage != null">
+		and	warrantinfo.WARRANTMORTGAGE =#{warrantmortgage}
+		</if>
+		
+		<if test="information != null and information != ''">
+			and(
+		warrantinfo.WARRANTADDRESS like "%${information}%"
+		or 
+		warrantinfo.WARRANTCUSTODIALUNIT like "%${information}%"
+		or
+		warrantinfo.WARRANTLOCAL like "%${information}%")
+		</if>
+		
+		<if test="selectinformation != null and selectinformation != ''">
+			and (warrantinfo.WARRANTPROPERTYNUMBER like "%${selectinformation}%"
+			or
+			warrantinfo.WARRANTADDRESS like "%${selectinformation}%")
+		</if>
+		and warrantinfo.WARRANTSTATUS ='0'
+		
+		<if test='warrantborrowstate != null and warrantborrowstate != "" and warrantborrowstate=="0"'>
+		and warrantinfo.WARRANTBORROWSTATE in ('0','2')
+		</if>
+		
+		<!-- 引入sql片段  -->
+		<include refid="ownerList"></include>
+		
+		 ORDER BY warrantinfo.FILENUMBER is null,warrantinfo.FILENUMBER+0 
+	</select>
+	
+	<select id="selectWarrantDetailedInfo" parameterType="com.mbe.vo.WarrantInfoVo"
+		resultType="com.mbe.vo.WarrantInfoVo">
+		select
+			f.floorname floorname,
+		    roominfo.roomno roomno,
+			b.buildingname buildingname
+		from warrantinfo warrantinfo
+		
+		inner join  warrantinfo2buliding warrantinfo2buliding
+		on 
+		warrantinfo2buliding.WARRANTID = warrantinfo.WARRANTID
+		
+		inner join roominfo roominfo
+		on
+		roominfo.ROOMID = warrantinfo2buliding.ROOMID
+		
+		LEFT JOIN floorinfo f ON f.floorid = roominfo.floorid
+		
+		LEFT JOIN
+		buildinginfo b ON b.buildingid = f.buildingid
+		
+		where warrantinfo.WARRANTID = #{warrantid}
+		
+		and warrantinfo.WARRANTSTATUS ='0'
+	</select>
+	<select id="selectBorrowInWarrantInfo" parameterType="com.mbe.vo.WarrantInfoVo"
+		resultType="com.mbe.vo.WarrantInfoVo">
+		select
+			warrantborrow.WARRANTBORROWCOMPANY,
+		    warrantborrow.WARRANTBORROWFROMDATA,
+			warrantborrow.WARRANTBORROWTODATA,
+			warrantborrow.WARRANTBORROWREADSTATE
+		from warrantinfo warrantinfo
+		
+		inner join  warrantborrow2warrantinfo warrantborrow2warrantinfo
+		on 
+		warrantborrow2warrantinfo.WARRANTID = warrantinfo.WARRANTID
+		
+		inner join  warrantborrow warrantborrow
+		on warrantborrow2warrantinfo.WARRANTBORROWID = warrantborrow.WARRANTBORROWID
+		
+		where warrantinfo.WARRANTID = #{warrantid}
+	    and warrantinfo.WARRANTBORROWSTATE in ('1','2')
+		
+		and warrantinfo.WARRANTSTATUS ='0'
+	</select>
+	
+	<select id="selectAllInfo" parameterType="com.mbe.vo.WarrantInfoVo"
+		resultType="com.mbe.vo.WarrantInfoVo">
+		select warrantinfo.WARRANTPROPERTYNUMBER,
+		    warrantinfo.WARRANTADDRESS,
+		    warrantborrow.WARRANTBORROWCOMPANY,
+		    warrantborrow.WARRANTBORROWFROMDATA,
+		    warrantborrow.WARRANTBORROWTODATA,
+		    warrantborrow.OWNER,
+		    warrantborrow.CREATEON,
+		    warrantborrow.WARRANTBORROWREADSTATE,
+		    warrantinfo.WARRANTREMARKS,
+		    warrantborrow.WARRANTBORROWREASON
+		from warrantinfo warrantinfo
+		
+		inner join  warrantborrow2warrantinfo warrantborrow2warrantinfo
+		on warrantinfo.WARRANTID = warrantborrow2warrantinfo.WARRANTID
+		
+		inner join  warrantborrow warrantborrow
+		on warrantborrow2warrantinfo.WARRANTBORROWID = warrantborrow.WARRANTBORROWID
+		
+
+		where warrantinfo.WARRANTSTATUS ='0'
+		and warrantborrow.WARRANTBORROWREADSTATE in ('1','2')
+		<if test="information != null and information != ''">
+				and(
+			warrantinfo.WARRANTPROPERTYNUMBER like "%${information}%"
+			or 
+			warrantborrow.WARRANTBORROWCOMPANY like "%${information}%")
+		</if>
+		
+		<if test='flg != null and flg != "" and flg == "1"'>
+		AND YEARWEEK(warrantborrow.`createon`) = YEARWEEK(now())
+			AND YEAR(warrantborrow.`createon`) =
+			YEAR(now())
+		</if>
+		<if test='flg != null and flg != "" and flg == "2"'>
+		AND MONTH(warrantborrow.`createon`) = MONTH(NOW())
+			AND
+			YEAR(warrantborrow.`createon`) = YEAR(now())
+
+		</if>
+	</select>
+	
+	<update id="updatewarranttstatus">
+		update warrantinfo set WARRANTSTATUS = '1' where WARRANTID =
+		#{warrantid}
+		and warrantinfo.WARRANTSTATUS ='0'
+	</update>
+	<update id="updatewarranttstatusByIds">
+		update warrantinfo set WARRANTMORTGAGE = #{warrantstatus}  where WARRANTID in
+		<foreach item="item" index="index" collection="warrantids"
+				 open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		and warrantinfo.WARRANTMORTGAGE = #{oldwarrantstatus}
+	</update>
+ 	<select id="selectUnUpdateWarrantId" resultType="java.lang.String">
+		select count(*),a.pawnaddressid from pawndetail a, mortgagecontractinfo b where a.MORCONINFOID=b.id
+		and (date(now()) &gt;= date(CONSTARTDATE) and date(now()) &lt;= date(CONENDDATE)) and b.STATUS='0'
+		and pid not in
+		<foreach item="item" index="index" collection="pawndetailids"
+				 open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		and pawnaddressid in
+		<foreach item="item" index="index" collection="warrantids"
+				 open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		group by a.pawnaddressid
+	</select>
+	<select id="selectPropertynumberInfo" 
+		resultType="com.mbe.vo.WarrantInfoVo">
+		select *
+		from warrantinfo warrantinfo
+		
+		where warrantinfo.WARRANTPROPERTYNUMBER = #{warrantpropertynumber}
+		
+	</select>
+	
+	<!-- sql片段 -->
+	<sql id="ownerList"> 
+			<if test="ownerList != null and ownerList.size() > 0">
+				and ( owner in
+				<foreach item="item" index="index" collection="ownerList"
+						open="(" separator="," close=")">
+						#{item}
+				</foreach>
+			</if>
+			<if test="idList != null and idList.size() > 0">
+				or id in
+				<foreach item="item" index="index" collection="idList"
+						open="(" separator="," close=")">
+						#{item} )
+				</foreach>
+			</if>
+			<if test="ownerList != null and ownerList.size() > 0 and (idList == null or idList.size() == 0)"> ) </if>
+	</sql>
+	
+	<select id="countWarrantsafekeeping" 
+		resultType="Integer">
+		select count(*) sumwarrantsafekeeping
+		from warrantinfo warrantinfo
+		
+		where warrantinfo.WARRANTSAFEKEEPING = '1'
+		<!-- 引入sql片段  -->
+		<include refid="ownerList"></include>
+	</select>
+	
+	<select id="countUnWarrantsafekeeping" 
+		resultType="Integer">
+		select count(*)
+		from warrantinfo warrantinfo
+		
+		where warrantinfo.WARRANTSAFEKEEPING = '0'
+		<!-- 引入sql片段  -->
+		<include refid="ownerList"></include>
+	</select>
+	
+	<select id="countWarrantpropertynumber" 
+		resultType="Integer">
+		select count(*)
+		from warrantinfo warrantinfo
+		
+		where 1=1
+		<!-- 引入sql片段  -->
+		<include refid="ownerList"></include>
+	</select>
+	
+	<select id="countWarrantmortgage" 
+		resultType="Integer">
+		select count(*)
+		from warrantinfo warrantinfo
+		
+		where warrantinfo.WARRANTMORTGAGE = '1'
+		<!-- 引入sql片段  -->
+		<include refid="ownerList"></include>
+	</select>
+	
+	<select id="sumWarrantusearea" 
+		resultType="Double">
+		select SUM(warrantinfo.WARRANTBUILDINGAREA)
+		from warrantinfo warrantinfo
+
+		where 1=1
+		<!-- 引入sql片段  -->
+		<include refid="ownerList"></include>
+	</select>
+</mapper>

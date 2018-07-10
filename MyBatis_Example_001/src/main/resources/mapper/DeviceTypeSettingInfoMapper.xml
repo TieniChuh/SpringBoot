@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mbe.mapper.DeviceTypeSettingInfoMapper">
+  <!--查询所有，使用resultMap返回结果集，将数据组装成树形结构  -->
+  <select id="findDeviceTypeAll" resultMap="deviceType_map">
+    select * from devicetypesettinginfo where devicelevel='1' and status='0' order by createon asc;
+  </select>
+  <!-- 返回结果集 -->
+  <resultMap type="com.mbe.vo.DeviceTypeSettingInfoVo" id="deviceType_map" extends="BaseResultMap">
+    <collection property="childList"  column="ID" ofType="com.mbe.vo.DeviceTypeSettingInfoVo" javaType="java.util.List"
+                select="findDeviceTypeByparentId"/>
+  </resultMap>
+  <!-- 根据父键查询 -->
+  <select id="findDeviceTypeByparentId" parameterType="String" resultMap="deviceType_map">
+     select * from devicetypesettinginfo where fatherid=#{id} and status='0' order by createon asc;
+  </select>
+
+  <!--设备名称 查询本级及上级 设备，使用resultMap返回结果集，将数据组装成树形结构  -->
+  <select id="queryByDeviceName" resultMap="queryByDeviceName_map" parameterType="java.lang.String">
+    select * from devicetypesettinginfo where DIVICENAME like  CONCAT('%',#{divicename,jdbcType=VARCHAR},'%' )   and status='0' order by createon asc;
+  </select>
+  <!-- 返回结果集 -->
+  <resultMap type="com.mbe.vo.DeviceTypeSettingInfoVo" id="queryByDeviceName_map" extends="BaseResultMap">
+    <association property="supervisor" javaType="com.mbe.vo.DeviceTypeSettingInfoVo"
+                 column="supervisor_id" select="findDeviceTypeById"/>
+     <!--<collection property="childList"  column="FATHERID" ofType="com.mbe.vo.DeviceTypeSettingInfoVo" javaType="java.util.List"
+                select="findDeviceTypeById"/>-->
+  </resultMap>
+  <!-- 根据父键查询 -->
+  <select id="findDeviceTypeById" parameterType="String" resultMap="queryByDeviceName_map">
+    select * from devicetypesettinginfo where ID=#{fatherid} and status='0' order by createon asc;
+  </select>
+  <resultMap id="BaseResultMap" type="com.mbe.model.DeviceTypeSettingInfo">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="DIVICENAME" jdbcType="VARCHAR" property="divicename" />
+    <result column="FATHERID" jdbcType="VARCHAR" property="fatherid" />
+    <result column="DEVICELEVEL" jdbcType="INTEGER" property="devicelevel" />
+    <result column="CREATEBY" jdbcType="VARCHAR" property="createby" />
+    <result column="CREATEON" jdbcType="DATE" property="createon" />
+    <result column="MODIFYBY" jdbcType="VARCHAR" property="modifyby" />
+    <result column="MODIFYON" jdbcType="DATE" property="modifyon" />
+    <result column="OWNER" jdbcType="VARCHAR" property="owner" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, DIVICENAME, FATHERID, DEVICELEVEL, CREATEBY, CREATEON, MODIFYBY, MODIFYON, OWNER,
+    STATUS
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from devicetypesettinginfo
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from devicetypesettinginfo
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.mbe.model.DeviceTypeSettingInfo">
+    insert into devicetypesettinginfo (ID, DIVICENAME, FATHERID,
+      DEVICELEVEL, CREATEBY, CREATEON,
+      MODIFYBY, MODIFYON, OWNER,
+      STATUS)
+    values (#{id,jdbcType=VARCHAR}, #{divicename,jdbcType=VARCHAR}, #{fatherid,jdbcType=VARCHAR},
+      #{devicelevel,jdbcType=INTEGER}, #{createby,jdbcType=VARCHAR}, #{createon,jdbcType=DATE},
+      #{modifyby,jdbcType=VARCHAR}, #{modifyon,jdbcType=DATE}, #{owner,jdbcType=VARCHAR},
+      #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mbe.model.DeviceTypeSettingInfo">
+    insert into devicetypesettinginfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="divicename != null">
+        DIVICENAME,
+      </if>
+      <if test="fatherid != null">
+        FATHERID,
+      </if>
+      <if test="devicelevel != null">
+        DEVICELEVEL,
+      </if>
+      <if test="createby != null">
+        CREATEBY,
+      </if>
+      <if test="createon != null">
+        CREATEON,
+      </if>
+      <if test="modifyby != null">
+        MODIFYBY,
+      </if>
+      <if test="modifyon != null">
+        MODIFYON,
+      </if>
+      <if test="owner != null">
+        OWNER,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="divicename != null">
+        #{divicename,jdbcType=VARCHAR},
+      </if>
+      <if test="fatherid != null">
+        #{fatherid,jdbcType=VARCHAR},
+      </if>
+      <if test="devicelevel != null">
+        #{devicelevel,jdbcType=INTEGER},
+      </if>
+      <if test="createby != null">
+        #{createby,jdbcType=VARCHAR},
+      </if>
+      <if test="createon != null">
+        #{createon,jdbcType=DATE},
+      </if>
+      <if test="modifyby != null">
+        #{modifyby,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyon != null">
+        #{modifyon,jdbcType=DATE},
+      </if>
+      <if test="owner != null">
+        #{owner,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mbe.model.DeviceTypeSettingInfo">
+    update devicetypesettinginfo
+    <set>
+      <if test="divicename != null">
+        DIVICENAME = #{divicename,jdbcType=VARCHAR},
+      </if>
+      <if test="fatherid != null">
+        FATHERID = #{fatherid,jdbcType=VARCHAR},
+      </if>
+      <if test="devicelevel != null">
+        DEVICELEVEL = #{devicelevel,jdbcType=INTEGER},
+      </if>
+      <if test="createby != null">
+        CREATEBY = #{createby,jdbcType=VARCHAR},
+      </if>
+      <if test="createon != null">
+        CREATEON = #{createon,jdbcType=DATE},
+      </if>
+      <if test="modifyby != null">
+        MODIFYBY = #{modifyby,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyon != null">
+        MODIFYON = #{modifyon,jdbcType=DATE},
+      </if>
+      <if test="owner != null">
+        OWNER = #{owner,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mbe.model.DeviceTypeSettingInfo">
+    update devicetypesettinginfo
+    set DIVICENAME = #{divicename,jdbcType=VARCHAR},
+      FATHERID = #{fatherid,jdbcType=VARCHAR},
+      DEVICELEVEL = #{devicelevel,jdbcType=INTEGER},
+      CREATEBY = #{createby,jdbcType=VARCHAR},
+      CREATEON = #{createon,jdbcType=DATE},
+      MODIFYBY = #{modifyby,jdbcType=VARCHAR},
+      MODIFYON = #{modifyon,jdbcType=DATE},
+      OWNER = #{owner,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

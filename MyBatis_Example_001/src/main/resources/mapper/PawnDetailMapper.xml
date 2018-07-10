@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mbe.mapper.PawnDetailMapper">
+  <resultMap id="BaseResultMap" type="com.mbe.model.PawnDetail">
+    <id column="PID" jdbcType="VARCHAR" property="pid" />
+    <result column="PAWNNAME" jdbcType="VARCHAR" property="pawnname" />
+    <result column="PAWNADDRESSID" jdbcType="VARCHAR" property="pawnaddressid" />
+    <result column="AMOUNT" jdbcType="INTEGER" property="amount" />
+    <result column="VALUE" jdbcType="DOUBLE" property="value" />
+    <result column="VOUCHERNO" jdbcType="VARCHAR" property="voucherno" />
+    <result column="REGOFFICE" jdbcType="VARCHAR" property="regoffice" />
+    <result column="MORCONINFOID" jdbcType="VARCHAR" property="morconinfoid" />
+    <result column="CREATEBY" jdbcType="VARCHAR" property="createby" />
+    <result column="CREATEON" jdbcType="DATE" property="createon" />
+    <result column="MODIFYBY" jdbcType="VARCHAR" property="modifyby" />
+    <result column="MODIFYON" jdbcType="DATE" property="modifyon" />
+    <result column="OWNER" jdbcType="VARCHAR" property="owner" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    PID, PAWNNAME, PAWNADDRESSID, AMOUNT, VALUE, VOUCHERNO, REGOFFICE, MORCONINFOID, CREATEBY,
+    CREATEON, MODIFYBY, MODIFYON, OWNER, STATUS
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pawndetail
+    where PID = #{pid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  delete from pawndetail
+  where PID = #{pid,jdbcType=VARCHAR}
+</delete>
+  <delete id="deleteByMorconInfoId" parameterType="java.lang.String">
+    delete from pawndetail
+    where MORCONINFOID = #{morconinfoid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.mbe.model.PawnDetail">
+    insert into pawndetail (PID, PAWNNAME, PAWNADDRESSID,
+      AMOUNT, VALUE, VOUCHERNO, 
+      REGOFFICE, MORCONINFOID, CREATEBY, 
+      CREATEON, MODIFYBY, MODIFYON, 
+      OWNER, STATUS)
+    values (#{pid,jdbcType=VARCHAR}, #{pawnname,jdbcType=VARCHAR}, #{pawnaddressid,jdbcType=VARCHAR},
+      #{amount,jdbcType=INTEGER}, #{value,jdbcType=DOUBLE}, #{voucherno,jdbcType=VARCHAR}, 
+      #{regoffice,jdbcType=VARCHAR}, #{morconinfoid,jdbcType=VARCHAR}, #{createby,jdbcType=VARCHAR}, 
+      #{createon,jdbcType=DATE}, #{modifyby,jdbcType=VARCHAR}, #{modifyon,jdbcType=DATE}, 
+      #{owner,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mbe.model.PawnDetail">
+    insert into pawndetail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pid != null">
+        PID,
+      </if>
+      <if test="pawnname != null">
+        PAWNNAME,
+      </if>
+      <if test="pawnaddressid != null">
+        PAWNADDRESSID,
+      </if>
+      <if test="amount != null">
+        AMOUNT,
+      </if>
+      <if test="value != null">
+        VALUE,
+      </if>
+      <if test="voucherno != null">
+        VOUCHERNO,
+      </if>
+      <if test="regoffice != null">
+        REGOFFICE,
+      </if>
+      <if test="morconinfoid != null">
+        MORCONINFOID,
+      </if>
+      <if test="createby != null">
+        CREATEBY,
+      </if>
+      <if test="createon != null">
+        CREATEON,
+      </if>
+      <if test="modifyby != null">
+        MODIFYBY,
+      </if>
+      <if test="modifyon != null">
+        MODIFYON,
+      </if>
+      <if test="owner != null">
+        OWNER,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pid != null">
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="pawnname != null">
+        #{pawnname,jdbcType=VARCHAR},
+      </if>
+      <if test="pawnaddressid != null">
+        #{pawnaddressid,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="value != null">
+        #{value,jdbcType=DOUBLE},
+      </if>
+      <if test="voucherno != null">
+        #{voucherno,jdbcType=VARCHAR},
+      </if>
+      <if test="regoffice != null">
+        #{regoffice,jdbcType=VARCHAR},
+      </if>
+      <if test="morconinfoid != null">
+        #{morconinfoid,jdbcType=VARCHAR},
+      </if>
+      <if test="createby != null">
+        #{createby,jdbcType=VARCHAR},
+      </if>
+      <if test="createon != null">
+        #{createon,jdbcType=DATE},
+      </if>
+      <if test="modifyby != null">
+        #{modifyby,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyon != null">
+        #{modifyon,jdbcType=DATE},
+      </if>
+      <if test="owner != null">
+        #{owner,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mbe.model.PawnDetail">
+    update pawndetail
+    <set>
+      <if test="pawnname != null">
+        PAWNNAME = #{pawnname,jdbcType=VARCHAR},
+      </if>
+      <if test="pawnaddressid != null">
+        PAWNADDRESSID = #{pawnaddressid,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        AMOUNT = #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="value != null">
+        VALUE = #{value,jdbcType=DOUBLE},
+      </if>
+      <if test="voucherno != null">
+        VOUCHERNO = #{voucherno,jdbcType=VARCHAR},
+      </if>
+      <if test="regoffice != null">
+        REGOFFICE = #{regoffice,jdbcType=VARCHAR},
+      </if>
+      <if test="morconinfoid != null">
+        MORCONINFOID = #{morconinfoid,jdbcType=VARCHAR},
+      </if>
+      <if test="createby != null">
+        CREATEBY = #{createby,jdbcType=VARCHAR},
+      </if>
+      <if test="createon != null">
+        CREATEON = #{createon,jdbcType=DATE},
+      </if>
+      <if test="modifyby != null">
+        MODIFYBY = #{modifyby,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyon != null">
+        MODIFYON = #{modifyon,jdbcType=DATE},
+      </if>
+      <if test="owner != null">
+        OWNER = #{owner,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mbe.model.PawnDetail">
+    update pawndetail
+    set PAWNNAME = #{pawnname,jdbcType=VARCHAR},
+      PAWNADDRESSID = #{pawnaddressid,jdbcType=VARCHAR},
+      AMOUNT = #{amount,jdbcType=INTEGER},
+      VALUE = #{value,jdbcType=DOUBLE},
+      VOUCHERNO = #{voucherno,jdbcType=VARCHAR},
+      REGOFFICE = #{regoffice,jdbcType=VARCHAR},
+      MORCONINFOID = #{morconinfoid,jdbcType=VARCHAR},
+      CREATEBY = #{createby,jdbcType=VARCHAR},
+      CREATEON = #{createon,jdbcType=DATE},
+      MODIFYBY = #{modifyby,jdbcType=VARCHAR},
+      MODIFYON = #{modifyon,jdbcType=DATE},
+      OWNER = #{owner,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR}
+    where PID = #{pid,jdbcType=VARCHAR}
+  </update>
+</mapper>

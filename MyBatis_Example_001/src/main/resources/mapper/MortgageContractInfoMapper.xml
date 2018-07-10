@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mbe.mapper.MortgageContractInfoMapper">
+  <!--级联查询 -->
+  <resultMap type="com.mbe.vo.MortgageContractInfoVo" id="MortgagePawnMap">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="MORCONTRACTNO" jdbcType="VARCHAR" property="morcontractno" />
+    <result column="DEBTAMOUNT" jdbcType="DOUBLE" property="debtamount" />
+    <result column="DEBTOR" jdbcType="VARCHAR" property="debtor" />
+    <result column="MORTGAGEE" jdbcType="VARCHAR" property="mortgagee" />
+    <result column="CONSTARTDATE" jdbcType="DATE" property="constartdate" />
+    <result column="CONENDDATE" jdbcType="DATE" property="conenddate" />
+    <result column="ATTACHEDINFO" jdbcType="VARCHAR" property="attachedinfo" />
+    <result column="CONTRACTSTATUS" jdbcType="VARCHAR" property="contractstatus" />
+    <result column="CREATEBY" jdbcType="VARCHAR" property="createby" />
+    <result column="CREATEON" jdbcType="DATE" property="createon" />
+    <result column="MODIFYBY" jdbcType="VARCHAR" property="modifyby" />
+    <result column="MODIFYON" jdbcType="DATE" property="modifyon" />
+    <result column="OWNER" jdbcType="VARCHAR" property="owner" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <collection property="pawnDetailList" ofType="com.mbe.vo.PawnDetailVo" column="MORCONINFOID">
+        <id column="PID" jdbcType="VARCHAR" property="pid" />
+        <result column="PAWNNAME" jdbcType="VARCHAR" property="pawnname" />
+      <result column="PAWNADDRESS" jdbcType="VARCHAR" property="pawnaddress" />
+      <result column="PAWNADDRESSID" jdbcType="VARCHAR" property="pawnaddressid" />
+        <result column="AMOUNT" jdbcType="INTEGER" property="amount" />
+        <result column="VALUE" jdbcType="DOUBLE" property="value" />
+        <result column="VOUCHERNO" jdbcType="VARCHAR" property="voucherno" />
+        <result column="REGOFFICE" jdbcType="VARCHAR" property="regoffice" />
+        <result column="MORCONINFOID" jdbcType="VARCHAR" property="morconinfoid" />
+        <result column="CREATEBY" jdbcType="VARCHAR" property="createby" />
+        <result column="CREATEON" jdbcType="DATE" property="createon" />
+        <result column="MODIFYBY" jdbcType="VARCHAR" property="modifyby" />
+        <result column="MODIFYON" jdbcType="DATE" property="modifyon" />
+        <result column="OWNER" jdbcType="VARCHAR" property="owner" />
+        <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    </collection>
+  </resultMap>
+
+  <!-- 分页查询 -->
+  <select id="countMortgageFetchPawn" resultType="int">
+    select count(ID)
+    FROM
+    mortgagecontractinfo
+    WHERE 1=1 AND Status='0'
+  </select>
+  <select id="selectMortgageFetchPawn" resultMap="MortgagePawnMap" >
+    select a.*,
+    (case when(date(now()) &gt;= date(a.CONSTARTDATE) and date(now()) &lt;= date(a.CONENDDATE)) then '有效' else '过期' end) as CONTRACTSTATUS
+    ,b.* ,c.WARRANTADDRESS AS PAWNADDRESS from mortgagecontractinfo a left join pawndetail b
+    on a.ID=b.MORCONINFOID AND a.Status='0'  left join warrantinfo c on b.PAWNADDRESSID =c.WARRANTID
+    order by CONTRACTSTATUS asc
+    <if test="sortColumn != null and sortColumn!= ''">
+      , ${sortColumn}
+      <if test="sortOrder != null and sortOrder != ''">
+        ${sortOrder}
+      </if>
+
+    </if>
+    LIMIT #{start},#{pageSize}
+  </select>
+
+
+  <resultMap id="BaseResultMap" type="com.mbe.model.MortgageContractInfo">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="MORCONTRACTNO" jdbcType="VARCHAR" property="morcontractno" />
+    <result column="DEBTAMOUNT" jdbcType="DOUBLE" property="debtamount" />
+    <result column="DEBTOR" jdbcType="VARCHAR" property="debtor" />
+    <result column="MORTGAGEE" jdbcType="VARCHAR" property="mortgagee" />
+    <result column="CONSTARTDATE" jdbcType="DATE" property="constartdate" />
+    <result column="CONENDDATE" jdbcType="DATE" property="conenddate" />
+    <result column="ATTACHEDINFO" jdbcType="VARCHAR" property="attachedinfo" />
+    <result column="CREATEBY" jdbcType="VARCHAR" property="createby" />
+    <result column="CREATEON" jdbcType="DATE" property="createon" />
+    <result column="MODIFYBY" jdbcType="VARCHAR" property="modifyby" />
+    <result column="MODIFYON" jdbcType="DATE" property="modifyon" />
+    <result column="OWNER" jdbcType="VARCHAR" property="owner" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, MORCONTRACTNO, DEBTAMOUNT, DEBTOR, MORTGAGEE, CONSTARTDATE, CONENDDATE, ATTACHEDINFO, 
+    CREATEBY, CREATEON, MODIFYBY, MODIFYON, OWNER, STATUS
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mortgagecontractinfo
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from mortgagecontractinfo
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.mbe.model.MortgageContractInfo">
+    insert into mortgagecontractinfo (ID, MORCONTRACTNO, DEBTAMOUNT, 
+      DEBTOR, MORTGAGEE, CONSTARTDATE, 
+      CONENDDATE, ATTACHEDINFO, CREATEBY, 
+      CREATEON, MODIFYBY, MODIFYON, 
+      OWNER, STATUS)
+    values (#{id,jdbcType=VARCHAR}, #{morcontractno,jdbcType=VARCHAR}, #{debtamount,jdbcType=DOUBLE}, 
+      #{debtor,jdbcType=VARCHAR}, #{mortgagee,jdbcType=VARCHAR}, #{constartdate,jdbcType=DATE}, 
+      #{conenddate,jdbcType=DATE}, #{attachedinfo,jdbcType=VARCHAR}, #{createby,jdbcType=VARCHAR}, 
+      #{createon,jdbcType=DATE}, #{modifyby,jdbcType=VARCHAR}, #{modifyon,jdbcType=DATE}, 
+      #{owner,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mbe.model.MortgageContractInfo">
+    insert into mortgagecontractinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="morcontractno != null">
+        MORCONTRACTNO,
+      </if>
+      <if test="debtamount != null">
+        DEBTAMOUNT,
+      </if>
+      <if test="debtor != null">
+        DEBTOR,
+      </if>
+      <if test="mortgagee != null">
+        MORTGAGEE,
+      </if>
+      <if test="constartdate != null">
+        CONSTARTDATE,
+      </if>
+      <if test="conenddate != null">
+        CONENDDATE,
+      </if>
+      <if test="attachedinfo != null">
+        ATTACHEDINFO,
+      </if>
+      <if test="createby != null">
+        CREATEBY,
+      </if>
+      <if test="createon != null">
+        CREATEON,
+      </if>
+      <if test="modifyby != null">
+        MODIFYBY,
+      </if>
+      <if test="modifyon != null">
+        MODIFYON,
+      </if>
+      <if test="owner != null">
+        OWNER,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="morcontractno != null">
+        #{morcontractno,jdbcType=VARCHAR},
+      </if>
+      <if test="debtamount != null">
+        #{debtamount,jdbcType=DOUBLE},
+      </if>
+      <if test="debtor != null">
+        #{debtor,jdbcType=VARCHAR},
+      </if>
+      <if test="mortgagee != null">
+        #{mortgagee,jdbcType=VARCHAR},
+      </if>
+      <if test="constartdate != null">
+        #{constartdate,jdbcType=DATE},
+      </if>
+      <if test="conenddate != null">
+        #{conenddate,jdbcType=DATE},
+      </if>
+      <if test="attachedinfo != null">
+        #{attachedinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="createby != null">
+        #{createby,jdbcType=VARCHAR},
+      </if>
+      <if test="createon != null">
+        #{createon,jdbcType=DATE},
+      </if>
+      <if test="modifyby != null">
+        #{modifyby,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyon != null">
+        #{modifyon,jdbcType=DATE},
+      </if>
+      <if test="owner != null">
+        #{owner,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mbe.model.MortgageContractInfo">
+    update mortgagecontractinfo
+    <set>
+      <if test="morcontractno != null">
+        MORCONTRACTNO = #{morcontractno,jdbcType=VARCHAR},
+      </if>
+      <if test="debtamount != null">
+        DEBTAMOUNT = #{debtamount,jdbcType=DOUBLE},
+      </if>
+      <if test="debtor != null">
+        DEBTOR = #{debtor,jdbcType=VARCHAR},
+      </if>
+      <if test="mortgagee != null">
+        MORTGAGEE = #{mortgagee,jdbcType=VARCHAR},
+      </if>
+      <if test="constartdate != null">
+        CONSTARTDATE = #{constartdate,jdbcType=DATE},
+      </if>
+      <if test="conenddate != null">
+        CONENDDATE = #{conenddate,jdbcType=DATE},
+      </if>
+      <if test="attachedinfo != null">
+        ATTACHEDINFO = #{attachedinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="createby != null">
+        CREATEBY = #{createby,jdbcType=VARCHAR},
+      </if>
+      <if test="createon != null">
+        CREATEON = #{createon,jdbcType=DATE},
+      </if>
+      <if test="modifyby != null">
+        MODIFYBY = #{modifyby,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyon != null">
+        MODIFYON = #{modifyon,jdbcType=DATE},
+      </if>
+      <if test="owner != null">
+        OWNER = #{owner,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mbe.model.MortgageContractInfo">
+    update mortgagecontractinfo
+    set MORCONTRACTNO = #{morcontractno,jdbcType=VARCHAR},
+      DEBTAMOUNT = #{debtamount,jdbcType=DOUBLE},
+      DEBTOR = #{debtor,jdbcType=VARCHAR},
+      MORTGAGEE = #{mortgagee,jdbcType=VARCHAR},
+      CONSTARTDATE = #{constartdate,jdbcType=DATE},
+      CONENDDATE = #{conenddate,jdbcType=DATE},
+      ATTACHEDINFO = #{attachedinfo,jdbcType=VARCHAR},
+      CREATEBY = #{createby,jdbcType=VARCHAR},
+      CREATEON = #{createon,jdbcType=DATE},
+      MODIFYBY = #{modifyby,jdbcType=VARCHAR},
+      MODIFYON = #{modifyon,jdbcType=DATE},
+      OWNER = #{owner,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

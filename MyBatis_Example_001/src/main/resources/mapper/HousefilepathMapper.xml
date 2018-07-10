@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mbe.mapper.HousefilepathMapper" >
+  <resultMap id="BaseResultMap" type="com.mbe.model.Housefilepath" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="HOUSEFILEPATHID" property="housefilepathid" jdbcType="VARCHAR" />
+    <result column="HOUSEID" property="houseid" jdbcType="VARCHAR" />
+    <result column="FILEURL" property="fileurl" jdbcType="VARCHAR" />
+    <result column="FILENAME" property="filename" jdbcType="VARCHAR" />
+    <result column="CREATEBY" property="createby" jdbcType="VARCHAR" />
+    <result column="CREATEON" property="createon" jdbcType="TIMESTAMP" />
+    <result column="MODIFYBY" property="modifyby" jdbcType="VARCHAR" />
+    <result column="MODIFYON" property="modifyon" jdbcType="TIMESTAMP" />
+    <result column="OWNER" property="owner" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <!-- 后台查询列表值 -->
+  <sql id="Base_List">
+    HOUSEFILEPATHID, HOUSEID, FILEURL, FILENAME, STATUS
+  </sql>
+  <select id="selectByHouseInfoId" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_List"/>
+    FROM
+    housefilepath
+    WHERE STATUS != '1'
+    AND HOUSEID = #{houseId}
+    ORDER BY createon
+  </select>
+
+  <update id="updateStatus">
+    UPDATE  housefilepath
+    SET STATUS = '1'
+    WHERE HOUSEFILEPATHID = #{housefilepathid}
+  </update>
+
+</mapper>

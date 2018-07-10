@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mbe.mapper.RoomSplitInfoMapper">
+  <resultMap id="BaseResultMap" type="com.mbe.model.RoomSplitInfo">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="SPLITDATE" jdbcType="VARCHAR" property="splitdate" />
+    <result column="TYPE" jdbcType="VARCHAR" property="type" />
+    <result column="CREATEBY" jdbcType="VARCHAR" property="createby" />
+    <result column="CREATEON" jdbcType="DATE" property="createon" />
+    <result column="MODIFYBY" jdbcType="VARCHAR" property="modifyby" />
+    <result column="MODIFYON" jdbcType="DATE" property="modifyon" />
+    <result column="OWNER" jdbcType="VARCHAR" property="owner" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="REASON" jdbcType="LONGVARCHAR" property="reason" />
+    <result column="OLDROOMIDS" jdbcType="LONGVARCHAR" property="oldroomids" />
+    <result column="NEWROOMIDS" jdbcType="LONGVARCHAR" property="newroomids" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    ID, SPLITDATE, TYPE, CREATEBY, CREATEON, MODIFYBY, MODIFYON, OWNER, STATUS
+  </sql>
+  <sql id="Blob_Column_List">
+    REASON, OLDROOMIDS, NEWROOMIDS
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from roomsplitinfo
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from roomsplitinfo
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.mbe.model.RoomSplitInfo">
+    insert into roomsplitinfo (ID, SPLITDATE, TYPE, 
+      CREATEBY, CREATEON, MODIFYBY, 
+      MODIFYON, OWNER, STATUS, 
+      REASON, OLDROOMIDS, NEWROOMIDS
+      )
+    values (#{id,jdbcType=VARCHAR}, #{splitdate,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{createby,jdbcType=VARCHAR}, #{createon,jdbcType=DATE}, #{modifyby,jdbcType=VARCHAR}, 
+      #{modifyon,jdbcType=DATE}, #{owner,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{reason,jdbcType=LONGVARCHAR}, #{oldroomids,jdbcType=LONGVARCHAR}, #{newroomids,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mbe.model.RoomSplitInfo">
+    insert into roomsplitinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="splitdate != null">
+        SPLITDATE,
+      </if>
+      <if test="type != null">
+        TYPE,
+      </if>
+      <if test="createby != null">
+        CREATEBY,
+      </if>
+      <if test="createon != null">
+        CREATEON,
+      </if>
+      <if test="modifyby != null">
+        MODIFYBY,
+      </if>
+      <if test="modifyon != null">
+        MODIFYON,
+      </if>
+      <if test="owner != null">
+        OWNER,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="reason != null">
+        REASON,
+      </if>
+      <if test="oldroomids != null">
+        OLDROOMIDS,
+      </if>
+      <if test="newroomids != null">
+        NEWROOMIDS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="splitdate != null">
+        #{splitdate,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="createby != null">
+        #{createby,jdbcType=VARCHAR},
+      </if>
+      <if test="createon != null">
+        #{createon,jdbcType=DATE},
+      </if>
+      <if test="modifyby != null">
+        #{modifyby,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyon != null">
+        #{modifyon,jdbcType=DATE},
+      </if>
+      <if test="owner != null">
+        #{owner,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="reason != null">
+        #{reason,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="oldroomids != null">
+        #{oldroomids,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="newroomids != null">
+        #{newroomids,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mbe.model.RoomSplitInfo">
+    update roomsplitinfo
+    <set>
+      <if test="splitdate != null">
+        SPLITDATE = #{splitdate,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        TYPE = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="createby != null">
+        CREATEBY = #{createby,jdbcType=VARCHAR},
+      </if>
+      <if test="createon != null">
+        CREATEON = #{createon,jdbcType=DATE},
+      </if>
+      <if test="modifyby != null">
+        MODIFYBY = #{modifyby,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyon != null">
+        MODIFYON = #{modifyon,jdbcType=DATE},
+      </if>
+      <if test="owner != null">
+        OWNER = #{owner,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="reason != null">
+        REASON = #{reason,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="oldroomids != null">
+        OLDROOMIDS = #{oldroomids,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="newroomids != null">
+        NEWROOMIDS = #{newroomids,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mbe.model.RoomSplitInfo">
+    update roomsplitinfo
+    set SPLITDATE = #{splitdate,jdbcType=VARCHAR},
+      TYPE = #{type,jdbcType=VARCHAR},
+      CREATEBY = #{createby,jdbcType=VARCHAR},
+      CREATEON = #{createon,jdbcType=DATE},
+      MODIFYBY = #{modifyby,jdbcType=VARCHAR},
+      MODIFYON = #{modifyon,jdbcType=DATE},
+      OWNER = #{owner,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      REASON = #{reason,jdbcType=LONGVARCHAR},
+      OLDROOMIDS = #{oldroomids,jdbcType=LONGVARCHAR},
+      NEWROOMIDS = #{newroomids,jdbcType=LONGVARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+
+</mapper>

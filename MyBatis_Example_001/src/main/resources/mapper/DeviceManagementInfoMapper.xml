@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mbe.mapper.DeviceManagementInfoMapper">
+  <resultMap id="BaseResultMap" type="com.mbe.model.DeviceManagementInfo">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="DEVICENO" jdbcType="VARCHAR" property="deviceno" />
+    <result column="DEVICENAME" jdbcType="VARCHAR" property="devicename" />
+    <result column="DEVICETYPEID" jdbcType="VARCHAR" property="devicetypeid" />
+    <result column="MODEL" jdbcType="VARCHAR" property="model" />
+    <result column="BRAND" jdbcType="VARCHAR" property="brand" />
+    <result column="DEVICEMAINTANTYPEID" jdbcType="VARCHAR" property="devicemaintantypeid" />
+    <result column="DEVICESTATUSID" jdbcType="VARCHAR" property="devicestatusid" />
+    <result column="LOCATION" jdbcType="VARCHAR" property="location" />
+    <result column="SERIALNUMBER" jdbcType="VARCHAR" property="serialnumber" />
+    <result column="OWNERCOMPANYID" jdbcType="VARCHAR" property="ownercompanyid" />
+    <result column="HANDLERID" jdbcType="VARCHAR" property="handlerid" />
+    <result column="SUPPLIER" jdbcType="VARCHAR" property="supplier" />
+    <result column="SUPPLIERPHONE" jdbcType="VARCHAR" property="supplierphone" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="CREATEBY" jdbcType="VARCHAR" property="createby" />
+    <result column="CREATEON" jdbcType="DATE" property="createon" />
+    <result column="MODIFYBY" jdbcType="VARCHAR" property="modifyby" />
+    <result column="MODIFYON" jdbcType="DATE" property="modifyon" />
+    <result column="OWNER" jdbcType="VARCHAR" property="owner" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.mbe.model.DeviceManagementInfo">
+    <result column="ATTACHEDINFO" jdbcType="LONGVARCHAR" property="attachedinfo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, DEVICENO, DEVICENAME, DEVICETYPEID, MODEL, BRAND, DEVICEMAINTANTYPEID, DEVICESTATUSID, 
+    LOCATION, SERIALNUMBER, OWNERCOMPANYID, HANDLERID, SUPPLIER, SUPPLIERPHONE, REMARK, 
+    CREATEBY, CREATEON, MODIFYBY, MODIFYON, OWNER, STATUS
+  </sql>
+  <sql id="Blob_Column_List">
+    ATTACHEDINFO
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from devicemanagementinfo
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from devicemanagementinfo
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.mbe.model.DeviceManagementInfo">
+    insert into devicemanagementinfo (ID, DEVICENO, DEVICENAME, 
+      DEVICETYPEID, MODEL, BRAND, 
+      DEVICEMAINTANTYPEID, DEVICESTATUSID, LOCATION, 
+      SERIALNUMBER, OWNERCOMPANYID, HANDLERID, 
+      SUPPLIER, SUPPLIERPHONE, REMARK, 
+      CREATEBY, CREATEON, MODIFYBY, 
+      MODIFYON, OWNER, STATUS, 
+      ATTACHEDINFO)
+    values (#{id,jdbcType=VARCHAR}, #{deviceno,jdbcType=VARCHAR}, #{devicename,jdbcType=VARCHAR}, 
+      #{devicetypeid,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR}, #{brand,jdbcType=VARCHAR}, 
+      #{devicemaintantypeid,jdbcType=VARCHAR}, #{devicestatusid,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, 
+      #{serialnumber,jdbcType=VARCHAR}, #{ownercompanyid,jdbcType=VARCHAR}, #{handlerid,jdbcType=VARCHAR}, 
+      #{supplier,jdbcType=VARCHAR}, #{supplierphone,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{createby,jdbcType=VARCHAR}, #{createon,jdbcType=DATE}, #{modifyby,jdbcType=VARCHAR}, 
+      #{modifyon,jdbcType=DATE}, #{owner,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{attachedinfo,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mbe.model.DeviceManagementInfo">
+    insert into devicemanagementinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="deviceno != null">
+        DEVICENO,
+      </if>
+      <if test="devicename != null">
+        DEVICENAME,
+      </if>
+      <if test="devicetypeid != null">
+        DEVICETYPEID,
+      </if>
+      <if test="model != null">
+        MODEL,
+      </if>
+      <if test="brand != null">
+        BRAND,
+      </if>
+      <if test="devicemaintantypeid != null">
+        DEVICEMAINTANTYPEID,
+      </if>
+      <if test="devicestatusid != null">
+        DEVICESTATUSID,
+      </if>
+      <if test="location != null">
+        LOCATION,
+      </if>
+      <if test="serialnumber != null">
+        SERIALNUMBER,
+      </if>
+      <if test="ownercompanyid != null">
+        OWNERCOMPANYID,
+      </if>
+      <if test="handlerid != null">
+        HANDLERID,
+      </if>
+      <if test="supplier != null">
+        SUPPLIER,
+      </if>
+      <if test="supplierphone != null">
+        SUPPLIERPHONE,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+      <if test="createby != null">
+        CREATEBY,
+      </if>
+      <if test="createon != null">
+        CREATEON,
+      </if>
+      <if test="modifyby != null">
+        MODIFYBY,
+      </if>
+      <if test="modifyon != null">
+        MODIFYON,
+      </if>
+      <if test="owner != null">
+        OWNER,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="attachedinfo != null">
+        ATTACHEDINFO,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceno != null">
+        #{deviceno,jdbcType=VARCHAR},
+      </if>
+      <if test="devicename != null">
+        #{devicename,jdbcType=VARCHAR},
+      </if>
+      <if test="devicetypeid != null">
+        #{devicetypeid,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null">
+        #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null">
+        #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="devicemaintantypeid != null">
+        #{devicemaintantypeid,jdbcType=VARCHAR},
+      </if>
+      <if test="devicestatusid != null">
+        #{devicestatusid,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null">
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="serialnumber != null">
+        #{serialnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="ownercompanyid != null">
+        #{ownercompanyid,jdbcType=VARCHAR},
+      </if>
+      <if test="handlerid != null">
+        #{handlerid,jdbcType=VARCHAR},
+      </if>
+      <if test="supplier != null">
+        #{supplier,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierphone != null">
+        #{supplierphone,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createby != null">
+        #{createby,jdbcType=VARCHAR},
+      </if>
+      <if test="createon != null">
+        #{createon,jdbcType=DATE},
+      </if>
+      <if test="modifyby != null">
+        #{modifyby,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyon != null">
+        #{modifyon,jdbcType=DATE},
+      </if>
+      <if test="owner != null">
+        #{owner,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="attachedinfo != null">
+        #{attachedinfo,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mbe.model.DeviceManagementInfo">
+    update devicemanagementinfo
+    <set>
+      <if test="deviceno != null">
+        DEVICENO = #{deviceno,jdbcType=VARCHAR},
+      </if>
+      <if test="devicename != null">
+        DEVICENAME = #{devicename,jdbcType=VARCHAR},
+      </if>
+      <if test="devicetypeid != null">
+        DEVICETYPEID = #{devicetypeid,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null">
+        MODEL = #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null">
+        BRAND = #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="devicemaintantypeid != null">
+        DEVICEMAINTANTYPEID = #{devicemaintantypeid,jdbcType=VARCHAR},
+      </if>
+      <if test="devicestatusid != null">
+        DEVICESTATUSID = #{devicestatusid,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null">
+        LOCATION = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="serialnumber != null">
+        SERIALNUMBER = #{serialnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="ownercompanyid != null">
+        OWNERCOMPANYID = #{ownercompanyid,jdbcType=VARCHAR},
+      </if>
+      <if test="handlerid != null">
+        HANDLERID = #{handlerid,jdbcType=VARCHAR},
+      </if>
+      <if test="supplier != null">
+        SUPPLIER = #{supplier,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierphone != null">
+        SUPPLIERPHONE = #{supplierphone,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createby != null">
+        CREATEBY = #{createby,jdbcType=VARCHAR},
+      </if>
+      <if test="createon != null">
+        CREATEON = #{createon,jdbcType=DATE},
+      </if>
+      <if test="modifyby != null">
+        MODIFYBY = #{modifyby,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyon != null">
+        MODIFYON = #{modifyon,jdbcType=DATE},
+      </if>
+      <if test="owner != null">
+        OWNER = #{owner,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="attachedinfo != null">
+        ATTACHEDINFO = #{attachedinfo,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.mbe.model.DeviceManagementInfo">
+    update devicemanagementinfo
+    set DEVICENO = #{deviceno,jdbcType=VARCHAR},
+      DEVICENAME = #{devicename,jdbcType=VARCHAR},
+      DEVICETYPEID = #{devicetypeid,jdbcType=VARCHAR},
+      MODEL = #{model,jdbcType=VARCHAR},
+      BRAND = #{brand,jdbcType=VARCHAR},
+      DEVICEMAINTANTYPEID = #{devicemaintantypeid,jdbcType=VARCHAR},
+      DEVICESTATUSID = #{devicestatusid,jdbcType=VARCHAR},
+      LOCATION = #{location,jdbcType=VARCHAR},
+      SERIALNUMBER = #{serialnumber,jdbcType=VARCHAR},
+      OWNERCOMPANYID = #{ownercompanyid,jdbcType=VARCHAR},
+      HANDLERID = #{handlerid,jdbcType=VARCHAR},
+      SUPPLIER = #{supplier,jdbcType=VARCHAR},
+      SUPPLIERPHONE = #{supplierphone,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      CREATEBY = #{createby,jdbcType=VARCHAR},
+      CREATEON = #{createon,jdbcType=DATE},
+      MODIFYBY = #{modifyby,jdbcType=VARCHAR},
+      MODIFYON = #{modifyon,jdbcType=DATE},
+      OWNER = #{owner,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      ATTACHEDINFO = #{attachedinfo,jdbcType=LONGVARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mbe.model.DeviceManagementInfo">
+    update devicemanagementinfo
+    set DEVICENO = #{deviceno,jdbcType=VARCHAR},
+      DEVICENAME = #{devicename,jdbcType=VARCHAR},
+      DEVICETYPEID = #{devicetypeid,jdbcType=VARCHAR},
+      MODEL = #{model,jdbcType=VARCHAR},
+      BRAND = #{brand,jdbcType=VARCHAR},
+      DEVICEMAINTANTYPEID = #{devicemaintantypeid,jdbcType=VARCHAR},
+      DEVICESTATUSID = #{devicestatusid,jdbcType=VARCHAR},
+      LOCATION = #{location,jdbcType=VARCHAR},
+      SERIALNUMBER = #{serialnumber,jdbcType=VARCHAR},
+      OWNERCOMPANYID = #{ownercompanyid,jdbcType=VARCHAR},
+      HANDLERID = #{handlerid,jdbcType=VARCHAR},
+      SUPPLIER = #{supplier,jdbcType=VARCHAR},
+      SUPPLIERPHONE = #{supplierphone,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      CREATEBY = #{createby,jdbcType=VARCHAR},
+      CREATEON = #{createon,jdbcType=DATE},
+      MODIFYBY = #{modifyby,jdbcType=VARCHAR},
+      MODIFYON = #{modifyon,jdbcType=DATE},
+      OWNER = #{owner,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <!-- 查询所有、模糊搜索 -->
+  <select id="countByDeviceNoOrName" resultType="int">
+    select count(ID)
+    FROM
+    devicemanagementinfo
+    WHERE 1=1 AND Status='0'
+    <if test="deviceno !=null and deviceno!=''">
+      AND (DEVICENO  like '%${deviceno}%'
+      OR DEVICENAME LIKE '%${deviceno}%')
+    </if>
+
+  </select>
+  <select id="queryByDeviceNoOrName" resultType="com.mbe.vo.DeviceManagementInfoVo">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM
+    devicemanagementinfo
+    WHERE 1=1 AND Status='0'
+    <if test="deviceno !=null and deviceno!=''">
+      AND (DEVICENO  like '%${deviceno}%'
+      OR DEVICENAME LIKE '%${deviceno}%')
+    </if>
+
+    <if test="sortColumn != null and sortColumn!= ''">
+      ORDER BY
+      ${sortColumn}
+      <if test="sortOrder != null and sortOrder != ''">
+        ${sortOrder}
+      </if>
+    </if>
+    LIMIT #{start},#{pageSize}
+  </select>
+</mapper>
